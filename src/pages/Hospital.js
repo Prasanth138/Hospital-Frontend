@@ -8,6 +8,9 @@ import { toast } from "react-toastify";
 import "../styles/Hospital.css";
 import Spinner from "react-bootstrap/Spinner";
 import Modal from "react-bootstrap/Modal";
+import Cards from "../components/Cards";
+import CardUpdate from "../components/CardsUpdate";
+import AddCard from "../components/AddCard"
 
 function Hospital() {
   const [hospitals, setHospitals] = useState([]);
@@ -185,88 +188,13 @@ function Hospital() {
                   <Modal.Title>Hospital Adding Form</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                <form onSubmit={handleSubmit} className="p-5 d-flex flex-column align-items-center adding-form">
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="hospital's name"
-                  value={hospitalData.name}
-                  onChange={handleChange}
-                  required
-                />
-
-                <input
-                  type="text"
-                  id="phone"
-                  name="phone"
-                  placeholder="phone.no"
-                  value={hospitalData.phone}
-                  onChange={handleChange}
-                  required
-                />
-
-                <input
-                  type="number"
-                  id="capacity"
-                  name="capacity"
-                  placeholder="capacity(rooms)"
-                  value={hospitalData.capacity}
-                  onChange={handleChange}
-                  required
-                />
-
-                <input
-                  type="text"
-                  id="specialties"
-                  name="specialties"
-                  placeholder="specialties"
-                  value={hospitalData.specialties}
-                  onChange={handleChange}
-                  required
-                />
-                <input
-                  type="text"
-                  id="address"
-                  name="address"
-                  placeholder="address"
-                  value={hospitalData.address}
-                  onChange={handleChange}
-                  required
-                  className="mt-2"
-                />
-
-                {errors && (
-                  <ul>
-                    {Object.values(errors).map((error, index) => (
-                      <li key={index} className="text-danger">
-                        {error}
-                      </li>
-                    ))}
-                  </ul>
-                )}
- 
-                <button
-                  
-                  type="submit"
-                  disabled={isLoading}
-                  style={{ backgroundColor: isLoading ? "green" : "" }}
-                  className="button-send"
-                >
-                  {isLoading ? (
-                    <>
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        size="sm"
-                      ></Spinner>{" "}
-                      Adding...
-                    </>
-                  ) : (
-                    "Add"
-                  )}{" "}
-                </button>
-              </form>
+                  <AddCard 
+                  handleSubmit={handleSubmit}
+                  hospitalData ={hospitalData}
+                  handleChange ={handleChange}
+                  errors ={errors}
+                  isLoading={isLoading}
+                  />
                 </Modal.Body>
                 
               </Modal>
@@ -300,192 +228,29 @@ function Hospital() {
                     className="card-hospital"
                   >
                     <form onSubmit={handleUpdateHospital}>
-                      <Card.Body>
-
-                        <Card.Title className="text-center ">
-                          {editingHospitalId === hospital._id ? (
-                            <>
-                              <label htmlFor="name"> name:</label>
-
-                              <input
-                                type="text"
-                                className="w-100"
-                                value={editedHospitalData.name}
-                                onChange={(event) =>
-                                  setEditedHospitalData({
-                                    ...editedHospitalData,
-                                    name: event.target.value,
-                                  })
-                                }
-                              />
-                            </>
-                          ) : (
-                            <span className="text-success">
-                              {hospital.name}
-                            </span>
-                          )}
-                        </Card.Title>
-
-                        <Card.Subtitle className="mb-2 text-center ">
-                          {editingHospitalId === hospital._id ? (
-                            <>
-                              <label htmlFor="name"> specialties:</label>
-
-                              <input
-                                type="text"
-                                className="w-100"
-                                value={editedHospitalData.specialties}
-                                onChange={(event) =>
-                                  setEditedHospitalData({
-                                    ...editedHospitalData,
-                                    specialties: event.target.value,
-                                  })
-                                }
-                              />
-                            </>
-                          ) : (
-                            <span className="text-muted">
-                              {hospital.specialties}
-                            </span>
-                          )}
-                        </Card.Subtitle>
-
-                        <Card.Subtitle className="mb-2 mt-4">
-                          {editingHospitalId === hospital._id ? (
-                            <>
-                              <label htmlFor="name"> capacity:</label>
-
-                              <input
-                                type="text"
-                                className="w-100"
-                                value={editedHospitalData.capacity}
-                                onChange={(event) =>
-                                  setEditedHospitalData({
-                                    ...editedHospitalData,
-                                    capacity: event.target.value,
-                                  })
-                                }
-                              />
-                            </>
-                          ) : (
-                            <span className="p-3">
-                              <i className="fa-solid fa-bed fs-5 px-3"></i>{" "}
-                              Rooms: {hospital.capacity}
-                            </span>
-                          )}
-                        </Card.Subtitle>
-
-                        <Card.Subtitle className="mb-2 py-1">
-                          {editingHospitalId === hospital._id ? (
-                            <>
-                              <label htmlFor="name"> address:</label>
-
-                              <input
-                                type="text"
-                                className="w-100"
-                                value={editedHospitalData.address}
-                                onChange={(event) =>
-                                  setEditedHospitalData({
-                                    ...editedHospitalData,
-                                    address: event.target.value,
-                                  })
-                                }
-                              />
-                            </>
-                          ) : (
-                            <span className="p-3">
-                              <i className="fa-solid fa-location-dot fs-5 px-3"></i>{" "}
-                              &nbsp; {hospital.address}
-                            </span>
-                          )}
-                        </Card.Subtitle>
-
-                        <Card.Subtitle className="mb-3 py-2">
-                          {editingHospitalId === hospital._id ? (
-                            <>
-                              <label htmlFor="name"> phone:</label>
-
-                              <input
-                                type="text"
-                                className="w-100"
-                                value={editedHospitalData.phone}
-                                onChange={(event) =>
-                                  setEditedHospitalData({
-                                    ...editedHospitalData,
-                                    phone: event.target.value,
-                                  })
-                                }
-                              />
-                            </>
-                          ) : (
-                            <span className="p-3">
-                              <i className="fa-solid fa-square-phone fs-5 px-3"></i>{" "}
-                              +91: {hospital.phone}
-                            </span>
-                          )}
-                        </Card.Subtitle>
-
-                        <hr />
-                        {editingHospitalId === hospital._id ? (
-                          <div className="d-flex align-items-center justify-content-center gap-2">
-                            <Button
-                              type="submit"
-                              variant="success"
-                              className="mx-2 w-100"
-                              style={{
-                                backgroundColor: Loading ? "green" : "",
-                              }}
-                            >
-                              {Loading ? "Saving..." : "Save"}{" "}
-                            </Button>
-                            <Button
-                              type="button"
-                              variant="warning"
-                              className="mx-2 w-100"
-                              onClick={() => setEditingHospitalId(null)}
-                            >
-                              Cancel
-                            </Button>
-                          </div>
-                        ) : (
-                          <></>
-                        )}
-
-                        {editingHospitalId !== hospital._id ? (
-                          <>
-                            <div className="d-flex align-items-center justify-content-center gap-2">
-                              <Card.Link>
-                                {editingHospitalId !== hospital._id && (
-                                  <Button
-                                    type="button"
-                                    variant="warning"
-                                    onClick={() =>
-                                      handleEditHospital(hospital._id)
-                                    }
-                                  >
-                                    <i className="fa-solid fa-user-pen"></i>{" "}
-                                    Update
-                                  </Button>
-                                )}
-                              </Card.Link>
-                              <Card.Link>
-                                <Button
-                                  type="button"
-                                  variant="danger"
-                                  onClick={() =>
-                                    handleDeleteHospital(hospital._id)
-                                  }
-                                >
-                                  <i className="fa-solid fa-user-minus"></i>{" "}
-                                  Remove
-                                </Button>
-                              </Card.Link>
-                            </div>
-                          </>
-                        ) : (
-                          <></>
-                        )}
-                      </Card.Body>
+                    {editingHospitalId === hospital._id ? 
+                    (<CardUpdate 
+                      hospital={hospital}
+                      hospitals={hospitals}
+                      newHospitalRef={newHospitalRef}
+                      handleUpdateHospital={handleUpdateHospital}
+                      editingHospitalId={editingHospitalId}
+                      handleEditHospital={handleEditHospital}
+                      handleDeleteHospital={handleDeleteHospital}
+                      setEditingHospitalId={setEditingHospitalId}
+                      editedHospitalData={editedHospitalData}
+                      setEditedHospitalData={setEditedHospitalData}
+                      Loading={Loading}
+                    />) : 
+                    (<Cards
+                      hospital={hospital}
+                      hospitals={hospitals}
+                      newHospitalRef={newHospitalRef}
+                      handleUpdateHospital={handleUpdateHospital}
+                      editingHospitalId={editingHospitalId}
+                      handleEditHospital={handleEditHospital}
+                      handleDeleteHospital={handleDeleteHospital}
+                    />)}
                     </form>
                   </Card>
                 ))}
